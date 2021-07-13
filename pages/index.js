@@ -2,14 +2,7 @@ import { AlurakutMenu, OrkutNostalgicIconSet } from '../src/lib/AluraCommons'
 import Box from '../src/components/Box'
 import MainGrid from '../src/components/MainGrid'
 import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations'
-
-const ProfileSidebar = (propriedades) => {
-    return (
-        <Box>
-            <img src={`https://github.com/${propriedades.githubUser}.png`} alt="thelunardi" style={{ borderRadius: '8px' }} />
-        </Box>
-    )
-}
+import ProfileSidebar from '../src/components/ProfileSidebar'
 
 const Home = () => {
     const githubUser = 'thelunardi'
@@ -24,7 +17,7 @@ const Home = () => {
 
     return (
         <>
-            <AlurakutMenu />
+            <AlurakutMenu githubUser={githubUser} />
             <MainGrid>
                 <div style={ { gridArea: 'profileArea' } }>
                     <ProfileSidebar githubUser={githubUser}/>
@@ -49,7 +42,7 @@ const Home = () => {
                             {
                                 favoritePeople.map(person => {
                                     return (
-                                        <li>
+                                        <li key={person}>
                                             <a href={ `/users/${ person }` } key={ person }>
                                                 <img src={ `https://github.com/${ person }.png` } alt={ person } />
                                                 <span>{ person }</span>
