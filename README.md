@@ -10,7 +10,7 @@
   </a>
 </p>
 <h1 align="center">
-
+    <img alt="Alurakut" title="#Alurakut" src="public/static/alurakut.png" />
 </h1>
 
 <p align="center">
@@ -30,7 +30,7 @@ Projeto da Imersão Alura
 
 ---
 
-## ⚙️ Funcionalidades
+## ⚙ Funcionalidades
 
 - [x] Exibir meus amigos
 - [x] Exibir minhas comunidades
