@@ -1,84 +1,98 @@
-# Example app with styled-components
+<p align="center">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/thelunardi/alurakut?color=%2304D361">
 
-This example features how you use a different styling solution than [styled-jsx](https://github.com/vercel/styled-jsx) that also supports universal styles. That means we can serve the required styles for the first render within the HTML and then load the rest in the client. In this case we are using [styled-components](https://github.com/styled-components/styled-components).
+  <a href="https://www.twitter.com/thelunardi/">
+    <img alt="Siga no Twitter" src="https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fthelunardi%2Falurakut">
+  </a>
 
-For this purpose we are extending the `<Document />` and injecting the server side rendered styles into the `<head>`, and also adding the `babel-plugin-styled-components` (which is required for server side rendering). Additionally we set up a global [theme](https://www.styled-components.com/docs/advanced#theming) for styled-components using NextJS custom [`<App>`](https://nextjs.org/docs/advanced-features/custom-app) component.
+  <a href="https://github.com/thelunardi/alurakut/commits/main">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/thelunardi/alurakut">
+  </a>
+</p>
+<h1 align="center">
 
-## Preview
+</h1>
 
-Preview the example live on [StackBlitz](http://stackblitz.com/):
+<p align="center">
+ <a href="#-sobre-o-projeto">Sobre</a> •
+ <a href="#-funcionalidades">Funcionalidades</a> •
+ <a href="#-layout">Layout</a> • 
+ <a href="#-como-executar-o-projeto">Como executar</a> • 
+ <a href="#-tecnologias">Tecnologias</a> • 
+ <a href="#-autor">Autor</a> •
+ <a href="#-modelo-do-readme">Modelo do README</a>
+</p>
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-styled-components)
 
-## Deploy your own
+## 💻 Sobre o projeto
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+Projeto da Imersão Alura
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-styled-components&project-name=with-styled-components&repository-name=with-styled-components)
+---
 
-## How to use
+## ⚙️ Funcionalidades
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
+- [x] Exibir meus amigos
+- [x] Exibir minhas comunidades
+- [x] Cadastrar minhas comunidades
+
+---
+
+## 🎨 Layout
+
+O layout da aplicação está disponível no Figma:
+<a href="https://www.figma.com/file/xmuLFmN5Isg2DJngNZ24LV/Alurakut?node-id=58%3A0">
+<img alt="thelunardi" src="https://img.shields.io/badge/Acessar%20Layout%20-Figma-%2304D361">
+</a>
+
+---
+
+## 🚀 Como executar o projeto
+
+#### 🧭 Rodando a aplicação web (Frontend)
 
 ```bash
-npx create-next-app --example with-styled-components with-styled-components-app
-# or
-yarn create next-app --example with-styled-components with-styled-components-app
+
+# Clone este repositório
+$ git clone git@github.com:thelunardi/alurakut.git
+
+# Acesse a pasta do projeto no seu terminal/cmd
+$ cd alurakut
+
+# Instale as dependências
+$ npm install
+
+# Execute a aplicação em modo de desenvolvimento
+$ npm run dev
+
+# A aplicação será aberta na porta:3000 - acesse http://localhost:3000
+
 ```
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+---
 
-### Try it on CodeSandbox
+## 🛠 Tecnologias
 
-[Open this example on CodeSandbox](https://codesandbox.io/s/github/vercel/next.js/tree/canary/examples/with-styled-components)
+As seguintes ferramentas foram usadas na construção do projeto:
 
-### Notes
+#### **Website**  ([React](https://reactjs.org/))
 
-When wrapping a [Link](https://nextjs.org/docs/api-reference/next/link) from `next/link` within a styled-component, the [as](https://styled-components.com/docs/api#as-polymorphic-prop) prop provided by `styled` will collide with the Link's `as` prop and cause styled-components to throw an `Invalid tag` error. To avoid this, you can either use the recommended [forwardedAs](https://styled-components.com/docs/api#forwardedas-prop) prop from styled-components or use a different named prop to pass to a `styled` Link.
+---
 
-<details>
-<summary>Click to expand workaround example</summary>
-<br />
+## 🦸 Autor
 
-**components/StyledLink.js**
+<a href="https://thelunardi.dev/">
+ <img style="border-radius: 50%;" src="https://github.com/thelunardi.png" width="100px;" alt=""/>
+ <br />
+ <sub><b>Alexandre Lunardi</b></sub></a> <a href="https://thelunardi.dev" title="thelunardi">🚀</a>
+ <br />
 
-```javascript
-import Link from 'next/link'
-import styled from 'styled-components'
+[![Twitter Badge](https://img.shields.io/badge/-@thelunardi-1ca0f1?style=flat-square&labelColor=1ca0f1&logo=twitter&logoColor=white&link=https://twitter.com/thelunardi)](https://twitter.com/thelunardi) [![Linkedin Badge](https://img.shields.io/badge/-Alexandre-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/thelunardi/)](https://www.linkedin.com/in/thelunardi/)
 
-const StyledLink = ({ as, children, className, href }) => (
-  <Link href={href} as={as} passHref>
-    <a className={className}>{children}</a>
-  </Link>
-)
+---
 
-export default styled(StyledLink)`
-  color: #0075e0;
-  text-decoration: none;
-  transition: all 0.2s ease-in-out;
+## 🦸 Modelo do README
 
-  &:hover {
-    color: #40a9ff;
-  }
-
-  &:focus {
-    color: #40a9ff;
-    outline: none;
-    border: 0;
-  }
-`
-```
-
-**pages/index.js**
-
-```javascript
-import StyledLink from '../components/StyledLink'
-
-export default () => (
-  <StyledLink href="/post/[pid]" forwardedAs="/post/abc">
-    First post
-  </StyledLink>
-)
-```
-
-</details>
+<a href="https://blog.rocketseat.com.br/author/thiago/">
+ <sub><b>by Thiago Marinho</b></sub></a> <a href="https://blog.rocketseat.com.br/author/thiago/" title="Rocketseat">🚀</a>
+ <br />
