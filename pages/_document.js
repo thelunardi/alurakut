@@ -18,6 +18,7 @@ export default class MyDocument extends Document {
         ...initialProps,
         styles: (
           <>
+            <link rel="shortcut icon" href="/static/favicon.ico" />
             {initialProps.styles}
             {sheet.getStyleElement()}
           </>
