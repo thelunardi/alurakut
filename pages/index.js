@@ -22,7 +22,7 @@ const Home = () => {
     useEffect(() => {
         const getCommunity = async () => {
             const communities = await fetchCommunities()
-            setProfileCommunity(communities?.allCommunities)
+            setProfileCommunity(communities)
         }
         const getFollowers = async () => {
             const followers = await fetchFollowers()
@@ -51,47 +51,39 @@ const Home = () => {
 
     const fetchCommunities = async () => {
         return await fetch(
-            'https://graphql.datocms.com/',
+            'api/communities',
             {
-                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${TOKEN_CMS}`,
-                },
-                body: JSON.stringify({
-                    query: '{ allCommunities {\n' +
-                        '    id\n' +
-                        '    title\n' +
-                        '    image\n' +
-                        '    url\n' +
-                        '    _status\n' +
-                        '    _firstPublishedAt\n' +
-                        '  }\n' +
-                        '  _allCommunitiesMeta {\n' +
-                        '    count\n' +
-                        '  } }'
-                }),
+                }
             }
         )
-            .then(res => res.json())
-            .then((res) => {
-                return res.data
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        .then(res => res.json())
+        .then((res) => res.data)
+        .catch((error) => {
+            console.log(error)
+        })
     }
 
     const addCommunity = (e) => {
         e.preventDefault()
 
         const imageAddress = `https://picsum.photos/200/300?id=${uuid_v4()}`
+        const newCommunity = {title, image: imageAddress, url}
 
-        const newCommunity = {id: uuid_v4(), title, image: imageAddress, url}
-        const newCommunities = [...profileCommunity, newCommunity]
+        fetch('/api/communities', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newCommunity)
+        })
+        .then(async (response) => {
+            const newCommunityFromDato = await response.json()
+            const newCommunities = [...profileCommunity, newCommunityFromDato.data]
+            setProfileCommunity(newCommunities)
+        })
 
-        setProfileCommunity(newCommunities)
         setTitle('')
         setURL('')
     }
