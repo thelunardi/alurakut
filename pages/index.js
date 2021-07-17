@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react'
+import { v4 as uuid_v4 } from 'uuid'
+import nookies from 'nookies'
+import jwt from 'jsonwebtoken'
 
 import { OrkutNostalgicIconSet } from '../src/components/NostalgicIconSet'
 import AlurakutMenu from "../src/components/Menu"
@@ -6,16 +9,15 @@ import Box from '../src/components/Box'
 import MainGrid from '../src/components/MainGrid'
 import ProfileRelations from '../src/components/ProfileRelations'
 import ProfileSidebar from '../src/components/ProfileSidebar'
-import { v4 as uuid_v4 } from "uuid"
 
 const TOKEN_CMS = process.env.NEXT_PUBLIC_TOKEN_CMS
 
-const Home = () => {
+const Home = (props) => {
     const [followers, setFollowers] = useState([])
     const [title, setTitle] = useState('')
     const [url, setURL] = useState('')
     const [profileCommunity, setProfileCommunity] = useState([])
-    const githubUser = 'thelunardi'
+    const githubUser = props.githubUser
 
     // array vazio no useEffect executa somente uma vez
     // fazendo só com setState, entraria em loop pois o React fica chamando a Home para renderizar
@@ -25,28 +27,36 @@ const Home = () => {
             setProfileCommunity(communities)
         }
         const getFollowers = async () => {
-            const followers = await fetchFollowers()
-            const followersToProfile = followers.map(follower => {
-                return {
-                    id: uuid_v4(),
-                    image: `https://github.com/${follower.login}.png`,
-                    url: `/users/${follower.login}`,
-                    title: follower.login
-                }
-            })
+            try {
+                const followers = await fetchFollowers()
+                const followersToProfile = followers.map(follower => {
+                    return {
+                        id: uuid_v4(),
+                        image: `https://github.com/${follower.login}.png`,
+                        url: `/users/${follower.login}`,
+                        title: follower.login
+                    }
+                })
 
-            if (followersToProfile.length > 6) {
-                followersToProfile.length = 6
+                if (followersToProfile.length > 6) {
+                    followersToProfile.length = 6
+                }
+                setFollowers(followersToProfile)
+            } catch (e) {
+                console.log(e)
             }
-            setFollowers(followersToProfile)
         }
         getFollowers()
         getCommunity()
     }, [])
 
     const fetchFollowers = async () => {
-        const res = await fetch('https://api.github.com/users/thelunardi/followers')
-        return await res.json()
+        try {
+            const res = await fetch(`https://api.github.com/users/${githubUser}/followers`)
+            return await res.json()
+        } catch (e) {
+            throw e
+        }
     }
 
     const fetchCommunities = async () => {
@@ -58,18 +68,18 @@ const Home = () => {
                 }
             }
         )
-        .then(res => res.json())
-        .then((res) => res.data)
-        .catch((error) => {
-            console.log(error)
-        })
+            .then(res => res.json())
+            .then((res) => res.data)
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
     const addCommunity = (e) => {
         e.preventDefault()
 
         const imageAddress = `https://picsum.photos/200/300?id=${uuid_v4()}`
-        const newCommunity = {title, image: imageAddress, url}
+        const newCommunity = {title, image: imageAddress, url, slug: githubUser}
 
         fetch('/api/communities', {
             method: 'POST',
@@ -78,11 +88,11 @@ const Home = () => {
             },
             body: JSON.stringify(newCommunity)
         })
-        .then(async (response) => {
-            const newCommunityFromDato = await response.json()
-            const newCommunities = [...profileCommunity, newCommunityFromDato.data]
-            setProfileCommunity(newCommunities)
-        })
+            .then(async (response) => {
+                const newCommunityFromDato = await response.json()
+                const newCommunities = [...profileCommunity, newCommunityFromDato.data]
+                setProfileCommunity(newCommunities)
+            })
 
         setTitle('')
         setURL('')
@@ -146,3 +156,26 @@ const Home = () => {
 }
 
 export default Home
+
+export const getServerSideProps = async (context) => {
+    const token = await nookies.get(context).USER_TOKEN
+    const response = await fetch('https://alurakut.vercel.app/api/auth', {
+        headers: {
+            'Authorization': token
+        }
+    })
+    const {isAuthenticated} = await response.json()
+    if (!isAuthenticated) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false,
+            }
+        }
+    }
+
+    const {githubUser} = jwt.decode(token)
+    return {
+        props: {githubUser}
+    }
+}

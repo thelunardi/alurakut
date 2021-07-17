@@ -24,7 +24,6 @@ const getRequest = async (request, response) => {
             const register = await client.items.create({
                 itemType: itemTypeCommunity,
                 ...request.body,
-                slug: 'thelunardi',
             });
 
             response.json({

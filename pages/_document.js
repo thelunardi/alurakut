@@ -18,7 +18,7 @@ export default class MyDocument extends Document {
         ...initialProps,
         styles: (
           <>
-            <title>Alurakut :: thelunardi</title>
+            <title>Alurakut :: Imersão React</title>
             <link rel="shortcut icon" href="static/favicon.ico" />
             {initialProps.styles}
             {sheet.getStyleElement()}
