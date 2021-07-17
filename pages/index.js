@@ -19,6 +19,14 @@ export default Home
 
 export const getServerSideProps = async (context) => {
     const token = await nookies.get(context).USER_TOKEN
+    if (!token)  {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false,
+            }
+        }
+    }
     const response = await fetch('https://alurakut.vercel.app/api/auth', {
         headers: {
             'Authorization': token
